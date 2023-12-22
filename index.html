@@ -29,6 +29,23 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
+
+        #progressBarContainer {
+            width: 80%;
+            margin: auto;
+            background-color: #ddd;
+            height: 20px;
+            border-radius: 10px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: #4caf50;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+
     </style>
     <script>
         var tryCount = 0;
@@ -84,14 +101,21 @@
         function displayStatistics(tryCount, timeSpent) {
             var totalPossibleCodes = 10000;
             var remainingCodes = totalPossibleCodes - tryCount;
-            var percentageChance = (1/remainingCodes) * 100;
+            var percentageChance = (1 / remainingCodes) * 100;
+            var progressBarPercentage = (tryCount / totalPossibleCodes) * 100;
+            var averageSpeed = timeSpent / tryCount;
 
             var statsDiv = document.getElementById('statistics');
             statsDiv.innerHTML = `
-                    <p>Try Count: ${tryCount}</p>
-                    <p>Percentage Chance of Guessing Next Code: ${percentageChance.toFixed(10)}%</p>
-                `;
+            <p>Try Count: ${tryCount}</p>
+            <p>Percentage Chance of Guessing Next Code: ${percentageChance.toFixed(10)}%</p>
+            <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
+        `;
+
+            var progressBar = document.getElementById('progressBar');
+            progressBar.style.width = `${progressBarPercentage}%`;
         }
+
 
         function updateTimer() {
             var currentTime = new Date();
@@ -120,11 +144,19 @@
         <br />
         <a href="voucher3.jpg" download>Darek 3</a>
     </div>
-    <div id="statistics">
-        <!-- Statistics will be displayed here -->
-    </div>
+
+    <br />
+    <br />
+    <br />
     <div id="timer">
         Time Elapsed: 0 seconds
+    </div>
+    <div id="statistics">
+
+        <!-- Statistics will be displayed here -->
+    </div>
+    <div id="progressBarContainer" style="width: 80%; margin: auto; background-color: #ddd; height: 20px; border-radius: 10px;">
+        <div id="progressBar" style="height: 100%; width: 0%; background-color: #4caf50; border-radius: 10px;"></div>
     </div>
 </body>
 </html>
