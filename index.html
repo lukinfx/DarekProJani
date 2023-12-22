@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Secure Download Page</title>
+    <title>Level 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,6 +44,7 @@
             } else if (digit1.value !== '' && digit2.value !== '' && digit3.value !== '' && digit4.value !== '') {
                 setDigitColor(false); // Incorrect code
                 setTimeout(clearDigits, 500); // Clear after 0.5 seconds
+                document.getElementById('downloadSection').style.display = 'none';
             }
         }
 
@@ -67,11 +68,12 @@
             if (currentField.value.length === 1) {
                 document.getElementById(nextFieldID).focus();
             }
+            checkCode()
         }
     </script>
 </head>
 <body>
-    <h1>Enter the Code to Access Downloads</h1>
+    <h1>Good luck, have fun</h1>
     <input class="digit-input" type="text" id="digit1" maxlength="1" onkeyup="moveToNextField(this, 'digit2')" autofocus>
     <input class="digit-input" type="text" id="digit2" maxlength="1" onkeyup="moveToNextField(this, 'digit3')">
     <input class="digit-input" type="text" id="digit3" maxlength="1" onkeyup="moveToNextField(this, 'digit4')">
