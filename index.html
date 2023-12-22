@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Download Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin-top: 50px;
+        }
+
+        .digit-input {
+            font-size: 20px;
+            width: 40px;
+            padding: 5px;
+            margin: 5px;
+            text-align: center;
+            border: 2px solid #ccc;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+    <script>
+        function checkCode() {
+            var digit1 = document.getElementById('digit1');
+            var digit2 = document.getElementById('digit2');
+            var digit3 = document.getElementById('digit3');
+            var digit4 = document.getElementById('digit4');
+            var code = digit1.value + digit2.value + digit3.value + digit4.value;
+
+            if (code === '6784') {
+                setDigitColor(true); // Correct code
+                document.getElementById('downloadSection').style.display = 'block';
+            } else if (digit1.value !== '' && digit2.value !== '' && digit3.value !== '' && digit4.value !== '') {
+                setDigitColor(false); // Incorrect code
+                setTimeout(clearDigits, 500); // Clear after 0.5 seconds
+            }
+        }
+
+        function clearDigits() {
+            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function(id) {
+                var element = document.getElementById(id);
+                element.value = '';
+                element.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('digit1').focus();
+        }
+
+        function setDigitColor(isCorrect) {
+            var className = isCorrect ? 'correct' : 'incorrect';
+            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function(id) {
+                document.getElementById(id).classList.add(className);
+            });
+        }
+
+        function moveToNextField(currentField, nextFieldID) {
+            if (currentField.value.length === 1) {
+                document.getElementById(nextFieldID).focus();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Enter the Code to Access Downloads</h1>
+    <input class="digit-input" type="text" id="digit1" maxlength="1" onkeyup="moveToNextField(this, 'digit2')" autofocus>
+    <input class="digit-input" type="text" id="digit2" maxlength="1" onkeyup="moveToNextField(this, 'digit3')">
+    <input class="digit-input" type="text" id="digit3" maxlength="1" onkeyup="moveToNextField(this, 'digit4')">
+    <input class="digit-input" type="text" id="digit4" maxlength="1" onkeyup="checkCode()">
+    <div id="downloadSection" style="display: none;">
+        <a href="file1.pdf" download>Download File 1</a>
+        <a href="file2.pdf" download>Download File 2</a>
+        <a href="file3.pdf" download>Download File 3</a>
+    </div>
+</body>
+</html>
