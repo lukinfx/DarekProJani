@@ -31,12 +31,23 @@
         }
     </style>
     <script>
+        var tryCount = 0;
+        var startTime;
+
         function checkCode() {
             var digit1 = document.getElementById('digit1');
             var digit2 = document.getElementById('digit2');
             var digit3 = document.getElementById('digit3');
             var digit4 = document.getElementById('digit4');
             var code = digit1.value + digit2.value + digit3.value + digit4.value;
+
+            if (code.length === 4 && !isNaN(code)) {
+
+                var endTime = new Date();
+                var timeSpent = (endTime - startTime) / 1000; // Calculate time spent in seconds
+                displayStatistics(tryCount, timeSpent);
+                tryCount++;
+            }
 
             if (code === '6784') {
                 setDigitColor(true); // Correct code
@@ -49,7 +60,7 @@
         }
 
         function clearDigits() {
-            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function(id) {
+            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function (id) {
                 var element = document.getElementById(id);
                 element.value = '';
                 element.classList.remove('correct', 'incorrect');
@@ -59,7 +70,7 @@
 
         function setDigitColor(isCorrect) {
             var className = isCorrect ? 'correct' : 'incorrect';
-            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function(id) {
+            ['digit1', 'digit2', 'digit3', 'digit4'].forEach(function (id) {
                 document.getElementById(id).classList.add(className);
             });
         }
@@ -70,6 +81,30 @@
             }
             checkCode()
         }
+
+        function displayStatistics(tryCount, timeSpent) {
+            var totalPossibleCodes = 10000;
+            var remainingCodes = totalPossibleCodes - tryCount;
+            var percentageChance = (1/remainingCodes) * 100;
+
+            var statsDiv = document.getElementById('statistics');
+            statsDiv.innerHTML = `
+                    <p>Try Count: ${tryCount}</p>
+                    <p>Percentage Chance of Guessing Next Code: ${percentageChance.toFixed(10)}%</p>
+                `;
+        }
+
+        function updateTimer() {
+            var currentTime = new Date();
+            var timeElapsed = (currentTime - startTime) / 1000;
+            document.getElementById('timer').textContent = `Time Elapsed: ${timeElapsed.toFixed(0)} seconds`;
+        }
+
+        window.onload = function () {
+            displayStatistics(0, 0);
+            startTime = new Date();
+            setInterval(updateTimer, 1000); // Update timer every 100 milliseconds (0.1 seconds)
+        };
     </script>
 </head>
 <body>
@@ -78,12 +113,19 @@
     <input class="digit-input" type="text" id="digit2" maxlength="1" onkeyup="moveToNextField(this, 'digit3')">
     <input class="digit-input" type="text" id="digit3" maxlength="1" onkeyup="moveToNextField(this, 'digit4')">
     <input class="digit-input" type="text" id="digit4" maxlength="1" onkeyup="checkCode()">
+    <br />
     <div id="downloadSection" style="display: none;">
         <a href="voucher1.jpg" download>Darek 1</a>
         <br />
         <a href="voucher2.jpg" download>Darek 2</a>
         <br />
         <a href="voucher3.jpg" download>Darek 3</a>
+    </div>
+    <div id="statistics">
+        <!-- Statistics will be displayed here -->
+    </div>
+    <div id="timer">
+        Time Elapsed: 0 seconds
     </div>
 </body>
 </html>
