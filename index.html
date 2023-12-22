@@ -42,11 +42,10 @@
             var code = digit1.value + digit2.value + digit3.value + digit4.value;
 
             if (code.length === 4 && !isNaN(code)) {
-
+                tryCount++;
                 var endTime = new Date();
                 var timeSpent = (endTime - startTime) / 1000; // Calculate time spent in seconds
                 displayStatistics(tryCount, timeSpent);
-                tryCount++;
             }
 
             if (code === '6784') {
