@@ -65,7 +65,7 @@
                 displayStatistics(tryCount, timeSpent);
             }
 
-            if (code === '6784') {
+            if (code === '1843') {
                 setDigitColor(true); // Correct code
                 document.getElementById('downloadSection').style.display = 'block';
             } else if (digit1.value !== '' && digit2.value !== '' && digit3.value !== '' && digit4.value !== '') {
@@ -105,10 +105,14 @@
             var progressBarPercentage = (tryCount / totalPossibleCodes) * 100;
             var averageSpeed = timeSpent / tryCount;
 
+            if (tryCount === 0) {
+                averageSpeed = 0;
+            }
+
             var statsDiv = document.getElementById('statistics');
             statsDiv.innerHTML = `
             <p>Try Count: ${tryCount}</p>
-            <p>Percentage Chance of Guessing Next Code: ${percentageChance.toFixed(10)}%</p>
+            <p>Chance of the next code being correct: ${percentageChance.toFixed(10)}%</p>
             <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
         `;
 
@@ -127,7 +131,14 @@
 
             var timeString = 'Time Elapsed: ';
             if (hours > 0) timeString += `${hours} hours, `;
-            if (minutes > 0) timeString += `${minutes} minutes, `;
+            if (minutes > 0) {
+                timeString += `${minutes}`;
+                if (minutes === 1) {
+                    timeString += ` minute, `;
+                } else {
+                    timeString += ` minutes, `;
+                }
+            }
             timeString += `${seconds} seconds`;
 
             document.getElementById('timer').textContent = timeString;
