@@ -127,7 +127,7 @@
 
             var timeString = 'Time Elapsed: ';
             if (hours > 0) timeString += `${hours} hours, `;
-            if (hours > 0 || minutes > 0) timeString += `${minutes} minutes, `;
+            if (minutes > 0) timeString += `${minutes} minutes, `;
             timeString += `${seconds} seconds`;
 
             document.getElementById('timer').textContent = timeString;
