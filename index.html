@@ -108,6 +108,10 @@
             var progressBarPercentage = (tryCount / totalPossibleCodes) * 100;
             var averageSpeed = timeSpent / tryCount;
 
+            if (isNaN(averageSpeed)) {
+                averageSpeed = 0;
+            }
+
             if (correct) {
                 progressBarPercentage = 100;
                 var statsDiv = document.getElementById('statistics');
@@ -121,14 +125,12 @@
                 var statsDiv = document.getElementById('statistics');
                 statsDiv.innerHTML = `
                 <p>Try Count: ${tryCount}</p>
-                <p>Chance of the next code being correct: ${percentageChance.toFixed(10)}%</p>
+                <p>Percentage of tried codes: ${progressBarPercentage.toFixed(2)}%</p>
                 <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
+                <p>Chance of the next code being correct: ${percentageChance.toFixed(10)}%</p>
                 `;
             }
 
-            if (isNaN(averageSpeed)) {
-                averageSpeed = 0;
-            }
 
             var progressBar = document.getElementById('progressBar');
             progressBar.style.width = `${progressBarPercentage}%`;
@@ -192,6 +194,7 @@
     <div id="timer">
         Time Elapsed: 0 seconds
     </div>
+    <br />
     <div id="progressBarContainer" style="width: 80%; margin: auto; background-color: #ddd; height: 20px; border-radius: 10px;">
         <div id="progressBar" style="height: 100%; width: 0%; background-color: #4caf50; border-radius: 10px;"></div>
     </div>
