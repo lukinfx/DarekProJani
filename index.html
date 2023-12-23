@@ -119,9 +119,20 @@
 
         function updateTimer() {
             var currentTime = new Date();
-            var timeElapsed = (currentTime - startTime) / 1000;
-            document.getElementById('timer').textContent = `Time Elapsed: ${timeElapsed.toFixed(0)} seconds`;
+            var timeElapsed = Math.floor((currentTime - startTime) / 1000);
+            var hours = Math.floor(timeElapsed / 3600);
+            timeElapsed %= 3600;
+            var minutes = Math.floor(timeElapsed / 60);
+            var seconds = timeElapsed % 60;
+
+            var timeString = 'Time Elapsed: ';
+            if (hours > 0) timeString += `${hours} hours, `;
+            if (hours > 0 || minutes > 0) timeString += `${minutes} minutes, `;
+            timeString += `${seconds} seconds`;
+
+            document.getElementById('timer').textContent = timeString;
         }
+
 
         window.onload = function () {
             displayStatistics(0, 0);
