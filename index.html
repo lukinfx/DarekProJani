@@ -50,6 +50,7 @@
     <script>
         var tryCount = 0;
         var startTime;
+        var interval;
 
         function checkCode() {
             var digit1 = document.getElementById('digit1');
@@ -66,8 +67,10 @@
             }
 
             if (code === '1843') {
+                clearInterval(interval);
                 setDigitColor(true); // Correct code
                 document.getElementById('downloadSection').style.display = 'block';
+                displayStatistics(tryCount, timeSpent, true);
             } else if (digit1.value !== '' && digit2.value !== '' && digit3.value !== '' && digit4.value !== '') {
                 setDigitColor(false); // Incorrect code
                 setTimeout(clearDigits, 500); // Clear after 0.5 seconds
@@ -98,23 +101,34 @@
             checkCode()
         }
 
-        function displayStatistics(tryCount, timeSpent) {
+        function displayStatistics(tryCount, timeSpent, correct) {
             var totalPossibleCodes = 10000;
             var remainingCodes = totalPossibleCodes - tryCount;
             var percentageChance = (1 / remainingCodes) * 100;
             var progressBarPercentage = (tryCount / totalPossibleCodes) * 100;
             var averageSpeed = timeSpent / tryCount;
 
-            if (tryCount === 0) {
-                averageSpeed = 0;
+            if (correct) {
+                progressBarPercentage = 100;
+                var statsDiv = document.getElementById('statistics');
+                statsDiv.innerHTML = `
+                <h1 color=green>Congrats, sis</h1>
+                <p>Total tries: ${tryCount}</p>
+                <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
+                `;
+            }
+            else {
+                var statsDiv = document.getElementById('statistics');
+                statsDiv.innerHTML = `
+                <p>Try Count: ${tryCount}</p>
+                <p>Chance of the next code being correct: ${percentageChance.toFixed(10)}%</p>
+                <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
+                `;
             }
 
-            var statsDiv = document.getElementById('statistics');
-            statsDiv.innerHTML = `
-            <p>Try Count: ${tryCount}</p>
-            <p>Chance of the next code being correct: ${percentageChance.toFixed(10)}%</p>
-            <p>Average Guess Speed: ${averageSpeed.toFixed(2)} seconds/guess</p>
-        `;
+            if (isNaN(averageSpeed)) {
+                averageSpeed = 0;
+            }
 
             var progressBar = document.getElementById('progressBar');
             progressBar.style.width = `${progressBarPercentage}%`;
@@ -148,7 +162,7 @@
         window.onload = function () {
             displayStatistics(0, 0);
             startTime = new Date();
-            setInterval(updateTimer, 1000); // Update timer every 100 milliseconds (0.1 seconds)
+            interval = setInterval(updateTimer, 1000); // Update timer every 100 milliseconds (0.1 seconds)
         };
     </script>
 </head>
@@ -160,22 +174,23 @@
     <input class="digit-input" type="text" inputmode="numeric" id="digit4" maxlength="1" onkeyup="checkCode()">
     <br />
     <div id="downloadSection" style="display: none;">
-        <a href="voucher1.jpg" download>Darek 1</a>
+        <a href="voucher1.jpg" download>Christmas present 1</a>
         <br />
-        <a href="voucher2.jpg" download>Darek 2</a>
+        <a href="voucher2.jpg" download>Christmas present 2</a>
         <br />
-        <a href="voucher3.jpg" download>Darek 3</a>
+        <a href="voucher3.jpg" download>Christmas present 3</a>
     </div>
 
     <br />
     <br />
     <br />
-    <div id="timer">
-        Time Elapsed: 0 seconds
-    </div>
     <div id="statistics">
 
         <!-- Statistics will be displayed here -->
+    </div>
+
+    <div id="timer">
+        Time Elapsed: 0 seconds
     </div>
     <div id="progressBarContainer" style="width: 80%; margin: auto; background-color: #ddd; height: 20px; border-radius: 10px;">
         <div id="progressBar" style="height: 100%; width: 0%; background-color: #4caf50; border-radius: 10px;"></div>
